@@ -25,7 +25,7 @@
 Склонировать проект:
 
 ```
-git clone https://github.com/ezemskov24/social_network_backend.git
+git clone https://github.com/ezemskov24/zm_task.git
 ```
 В репозитории хранится файл .env.template. Надо на его основе создать и заполнить файл .env 
 
