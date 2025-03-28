@@ -13,6 +13,8 @@ services:
       - .env
     depends_on:
       - postgres
+    networks:
+      - todo_network
 
   postgres:
     container_name: todo_db
@@ -31,6 +33,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - todo_network
 
 volumes:
   postgres_data:
+
+networks:
+  todo_network:
+    driver: bridge
