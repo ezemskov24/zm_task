@@ -21,6 +21,11 @@ TestingSessionLocal = sessionmaker(
 
 @pytest_asyncio.fixture(scope="function")
 async def db() -> AsyncGenerator:
+    """
+    Фикстура для подготовки и очистки базы данных перед и после каждого теста
+
+    :yield: Управление временем жизни базы данных
+    """
     async with test_engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield
@@ -31,6 +36,12 @@ async def db() -> AsyncGenerator:
 
 @pytest_asyncio.fixture(scope="function")
 async def db_session(db) -> AsyncSession:
+    """
+    Фикстура для создания сессии базы данных для каждого теста
+
+    :param db: Фикстура базы данных
+    :yield: Асинхронная сессия базы данных
+    """
     async with TestingSessionLocal() as session:
         yield session
         await session.rollback()
@@ -38,6 +49,12 @@ async def db_session(db) -> AsyncSession:
 
 @pytest_asyncio.fixture(scope="function")
 async def client(db_session) -> AsyncGenerator:
+    """
+    Фикстура для создания клиента FastAPI для каждого теста
+
+    :param db_session: Фикстура сессии базы данных
+    :yield: Экземпляр клиента для отправки запросов на сервер
+    """
     def mock_verify_token():
         return TokenData(sub="testuser")
 

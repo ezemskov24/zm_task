@@ -9,6 +9,13 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 
 def verify_token(token: str = Depends(oauth2_scheme)) -> TokenData:
+    """
+    Функция для верификации JWT токена
+
+    :param token: JWT токен
+    :return: Объект TokenData, содержащий информацию о пользователе
+    :raises HTTPException: Если токен недействителен, выбрасывается исключение с кодом 401.
+    """
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return TokenData(sub=payload.get("sub"))
